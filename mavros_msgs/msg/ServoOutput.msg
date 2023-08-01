@@ -1,0 +1,5 @@
+# Servo Output msg
+
+std_msgs/Header header
+
+int32[16] controls

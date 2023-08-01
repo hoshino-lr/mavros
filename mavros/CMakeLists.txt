@@ -141,6 +141,7 @@ add_library(mavros_plugins
   src/plugins/rallypoint.cpp
   src/plugins/rc_io.cpp
   src/plugins/safety_area.cpp
+  src/plugins/servo_output.cpp
   src/plugins/setpoint_accel.cpp
   src/plugins/setpoint_attitude.cpp
   src/plugins/setpoint_position.cpp
