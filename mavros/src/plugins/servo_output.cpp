@@ -15,7 +15,6 @@
  */
 
 #include <mavros/mavros_plugin.h>
-
 #include <mavros_msgs/ServoOutput.h>
 
 namespace mavros {
@@ -60,6 +59,7 @@ private:
         servo_output_raw_msg->controls[0] = servo_output_raw.servo1_raw;
         servo_output_raw_msg->controls[1] = servo_output_raw.servo2_raw;
         servo_output_raw_msg->controls[2] = servo_output_raw.servo3_raw;
+        servo_output_raw_msg->controls[3] = servo_output_raw.servo4_raw;
 
         servo_output_pub.publish(servo_output_raw_msg);
 	}
