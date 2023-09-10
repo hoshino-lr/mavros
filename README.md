@@ -1,4 +1,14 @@
 MAVROS
+-----
+本仓库专门为读取和控制UAV PWM而设计，同时兼容mavros既有功能
+
+- 在使用之前请切换到mavros_pwm分支
+- 读取pwm信号请读取 `servo_output_raw` topic
+- 控制pwm信号请使用 `servo_control` topic
+- 使用本仓库请配合 [uav_control](https://github.com/hoshino-lr/uav_control) 仓库使用
+
+
+MAVROS
 ======
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/mavlink/mavros)](https://github.com/mavlink/mavros/releases)  [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mavlink/mavros?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  [![CI](https://github.com/mavlink/mavros/actions/workflows/main.yml/badge.svg)](https://github.com/mavlink/mavros/actions/workflows/main.yml)
 
