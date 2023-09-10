@@ -2,7 +2,7 @@ MAVROS
 -----
 本仓库专门为读取和控制UAV PWM而设计，同时兼容mavros既有功能
 
-- 在使用之前请切换到mavros_pwm分支
+- 在使用之前请切换到master_pwm分支
 - 读取pwm信号请读取 `servo_output_raw` topic
 - 控制pwm信号请使用 `servo_control` topic
 - 使用本仓库请配合 [uav_control](https://github.com/hoshino-lr/uav_control) 仓库使用
