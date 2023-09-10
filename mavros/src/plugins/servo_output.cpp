@@ -33,7 +33,7 @@ public:
 	void initialize(UAS &uas_) override
 	{
 		PluginBase::initialize(uas_);
-
+        servo_control_sub = nh.subscribe("servo_control", 10, &ServoOutputPlugin::actuator_control_cb, this);
 		servo_output_pub = nh.advertise<mavros_msgs::ServoOutput>("servo_output_raw", 10);
 	}
 
@@ -46,10 +46,10 @@ public:
 
 private:
 	ros::NodeHandle nh;
-
+    ros::Subscriber servo_control_sub;
 	ros::Publisher servo_output_pub;
 
-	/* -*- rx handlers -*- */
+    /* -*- callbacks -*- */
 
 	void handle_actuator_control_target(const mavlink::mavlink_message_t *msg, mavlink::common::msg::SERVO_OUTPUT_RAW &servo_output_raw)
 	{
@@ -63,6 +63,35 @@ private:
 
         servo_output_pub.publish(servo_output_raw_msg);
 	}
+
+    void actuator_control_cb(const mavros_msgs::ServoOutput::ConstPtr &req) {
+        //! about groups, mixing and channels: @p https://pixhawk.org/dev/mixing
+        //! message definiton here: @p https://mavlink.io/en/messages/common.html#SET_ACTUATOR_CONTROL_TARGET
+        mavlink::common::msg::COMMAND_LONG cmd {};
+        cmd.command = 187;
+        cmd.confirmation = 0;
+        double param1 = (req->controls[0] - 1500) / 500.0;
+        double param2 = (req->controls[1] - 1500) / 500.0;
+        double param3 = (req->controls[2] - 1500) / 500.0;
+        double param4 = (req->controls[3] - 1500) / 500.0;
+
+        param1 = fmax(fmin(1.0,param1),-1.0);
+        param2 = fmax(fmin(1.0,param2),-1.0);
+        param3 = fmax(fmin(1.0,param3),-1.0);
+        param4 = fmax(fmin(1.0,param4),-1.0);
+
+        cmd.param1 = (float)param1;
+        cmd.param2 = (float)param2;
+        cmd.param3 = (float)param3;
+        cmd.param4 = (float)param4;
+        cmd.param5 = 0;
+        cmd.param6 = 0;
+        cmd.param7 = 0;
+
+        cmd.target_system = m_uas->get_tgt_system();
+        cmd.target_component = m_uas->get_tgt_component();
+        UAS_FCU(m_uas)->send_message_ignore_drop(cmd);
+    }
 
 };  // class ServoOutputPlugin
 
